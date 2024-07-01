@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo App | {% block title %}{% endblock title %}</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    <!-- Font Awsome -->
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+    <!-- JQuery -->
+    <script src="{% static 'js/js library/jquery.min.js' %}"></script>
+    <!-- Custom Files -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/index.js' %}"></script>
+</head>
+
+<body>
+    {% include 'inc/loading.html' %}
+    {% include 'inc/modals.html' %}
+    <header>
+        {% include 'inc/navbar.html' %}
+    </header>
+
+    {% block content %}
+    {% endblock content %}
+
+    <script>
+        function form_modal(title, url) {
+            start_loading()
+            $.ajax({
+                method: 'get',
+                url: url,
+                success: (res) => {
+                    end_loading()
+                    $('#form_modal .modal-title').html(title)
+                    $('#form_modal .modal-body').html(res)
+                    $('#form_modal').modal('show')
+                },
+                error: (err) => {
+                    end_loading()
+                    console.log('Error : ', err);
+                    alert('Error occured.')
+                }
+            })
+        }
+
+        function conform_modal(url) {
+            $('#conform_modal form')[0].action = url
+            $('#conform_modal').modal('show')
+        }
+    </script>
+    {% block script %}
+    {% endblock script %}
+</body>
+
+</html>

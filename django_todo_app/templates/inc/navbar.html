@@ -1,0 +1,45 @@
+
+<!-- NavBar -->
+
+<nav class="navbar navbar-expand navbar-dark shadow">
+    <div class="container">
+        <a href="/" class="navbar-brand">
+            <h4 class='fw-bold'>Todo List App</h4>
+        </a>
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown">
+                    Hello, {{user}}
+                    {% if user.profile_img %}
+                    <img src="{{user.profile_img.url}}" alt="User Profile..." height="30" width="30"
+                        class="profile mx-2">
+                    {% endif %}
+                </a>
+                <div class="dropdown-menu dropdown-menu-end shadow">
+                    <div class="dropdown-container">
+                        {% if user.profile_img %}
+                        <img src="{{user.profile_img.url}}" alt="User Profile..." height="150" width="150"
+                            class="profile-border">
+                        {% endif %}
+                        <h5 class="fs-4 pt-2">{{user}} </h5>
+                        <hr>
+                        <a class="dropdown-item" href="{% url 'edit-profile' %}"> <i class="fa-solid fa-user-pen px-3"></i> Edit Profile</a>
+                        <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i
+                                class="fa-solid fa-arrow-right-to-bracket px-3"></i> Logout </a>
+                    </div>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a href="{% url 'signup' %}" class="nav-link">Signup</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'login' %}" class="nav-link">Login</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<!-- End NavBar -->

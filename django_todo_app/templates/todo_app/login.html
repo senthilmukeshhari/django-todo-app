@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Login Page{% endblock title %}
+
+{% block content %}
+
+<main class="content">
+    <img src="{% static 'images/forgot password.jpg' %}" alt="login image..."
+        class="login-img col-md-7 d-none d-md-block">
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-9 ">
+        {% include 'inc/messages.html' %}
+        <form name="login-form" action="{% url 'login' %}" method="post" class="login-form">
+            <h1>Login</h1>
+            {% csrf_token %}
+            <div class="group">
+                <i class="fa-solid fa-user icon"></i>
+                <input type="text" class="form-control" name="username" id="username" placeholder="Username" autofocus required />
+                <p class="form-text text-danger">Help Text</p>
+            </div>
+            <div class="group">
+                <i class="fa-solid fa-lock icon"></i>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password"
+                    required />
+                <p class="form-text text-danger">Help Text</p>
+            </div>
+            <button type="submit" class="btn mt-1 w-100">Login</button>
+            <p class="my-2">Or</p>
+            <p>Don't have an account<a href="{% url 'signup' %}" class="ps-1">Signup?</a></p>
+        </form>
+    </div>
+
+</main>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $('form[name=login-form]').submit(() => {
+        start_loading()
+    })
+</script>
+{% endblock script %}

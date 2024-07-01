@@ -1,0 +1,22 @@
+{% if messages %}
+
+<style>
+   .alert {
+      z-index: -1;
+   }
+</style>
+
+{% for message in messages %}
+<div
+   class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{message.tags}}{% endif %} alert-dismissible fade show">
+   {{message}}
+</div>
+
+{% endfor %}
+
+<script>
+   $('.alert').show(() => {
+      $('.alert').hide(10000)
+   })
+</script>
+{% endif %}

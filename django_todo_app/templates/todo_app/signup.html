@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Signup Page{% endblock title %}
+
+{% block content %}
+<style>
+</style>
+
+<main class="content">
+    <form name="signupForm" action="{% url 'signup' %}" method="post"
+        class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-9 signup-form" enctype="multipart/form-data" novalidate>
+        <h1> <i class="fa-solid fa-user fs-4"></i> Signup</h1>
+        {% csrf_token %}
+        <div class="profile-group">
+            <img src="../../media/profile_images/default_user.png" alt="profile image" height="80" width="80"
+                id="profile-pic">
+            <label for="input-img-file" class="upload-icon"> <i class="fa-solid fa-camera"></i></label>
+            <input type="file" accept="image/*" class="d-none" id="input-img-file"
+                name="profile-img"/>
+            <p class="form-text">Help Text</p>
+        </div>
+        <div class="group">
+            <i class="fa-solid fa-user icon"></i>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required
+                autofocus />
+            <p class="form-text text-danger">Help Text</p>
+        </div>
+
+        <div class="group">
+            <i class="fa-solid fa-envelope icon"></i>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required />
+            <p class="form-text text-danger">Help Text</p>
+        </div>
+
+        <div class="group">
+            <i class="fa-solid fa-lock icon"></i>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
+            <p class="form-text text-danger">Help Text</p>
+        </div>
+
+        <button type="submit" class="btn mt-1 w-100">Signup</button>
+        <p class="my-2">Or</p>
+        <p>Already have an account<a href="{% url 'login' %}" class="ps-1">Login?</a></p>
+    </form>
+    <img src="{% static 'images/sign up.jpg' %}" alt="signup image..."
+        class="login-img col-lg-7 col-md-6 d-none d-md-block">
+</main>
+
+{% endblock content %}
+
+
+{% block script %}
+<script src="{% static 'js/signup_validation.js' %}"></script>
+{% endblock script %}

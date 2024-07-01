@@ -1,0 +1,58 @@
+<style>
+  .modal-content {
+    background-color: rgb(240, 240, 244) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color2);
+  }
+  .btn-close{
+    color: var(--color2) !important;
+  }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="form_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn" onclick="$('#form_modal form').submit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Conformation Modal -->
+<div class="modal fade" id="conform_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Conformation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Do you want delete your todo item ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn">Conform</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#conform_modal form').submit((e) => {
+    start_loading()
+  })
+  
+</script>

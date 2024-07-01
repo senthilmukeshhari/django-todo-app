@@ -1,0 +1,99 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Home Page{% endblock title %}
+
+
+{% block content %}
+
+<style>
+    .search-icon {
+        position: absolute;
+        top: 28px;
+        left: 32px;
+        color: var(--color2);
+        font-size: 20px;
+    }
+
+    #search-item:focus{
+        border: 2px solid var(--color2);
+        border-radius: 50%;
+    }
+    #search-item::placeholder {
+        color: var(--color2);
+    }
+</style>
+
+<main class="row mt-3">
+    <div class="col-lg-7 col-md-9 col-sm-10 col-11">
+        {% include 'inc/messages.html' %}
+        <div class="add-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Serach your Todo list..." id="search-item"
+                class="w-100 p-2 ps-5 rounded-3" onkeyup="Searching()" />
+        </div>
+
+        <div class="item-container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="fw-bold mb-3">Your Tasks... </h3>
+                <h3 style="color: var(--color1);">
+                    <i class="fa-solid fa-circle-check"></i> {{items_count}} Tasks Completed
+                </h3>
+                <button type="button" class="btn" id="add-btn" data-url="{% url 'add-item' %}"> <i
+                        class="fa-solid fa-plus"></i> Add new </button>
+            </div>
+
+            {% for item in items %}
+            <div class="item-box animate">
+                {{item.title}}
+                {% if item.is_completed %}
+                <div class="strike-line"></div>
+                {% endif %}
+                <div class="d-flex">
+                    <button type="submit" class="close-btn mx-3" id="edit-btn" data-url="{% url 'edit-item' item.pk %}"
+                        onclick="edit_form(event)">
+                        <i class="fa-solid fa-pen-to-square" data-url="{% url 'edit-item' item.pk %}"></i> </button>
+                    <button type="submit" class="close-btn" id="delete-btn" data-url="{% url 'delete-item' item.pk %}"
+                        onclick="delete_conform(event)">X</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</main>
+{% endblock content %}
+
+{% block script %}
+<script>
+    $('#add-btn').on('click', (e) => {
+        form_modal('Add Todo List', "{% url 'add-item' %}")
+    })
+
+    const edit_form = (e) => {
+        console.log('hii');
+        let url = e.target.getAttribute('data-url')
+        if (!url) {
+            url = e.target.parentNode.getAttribute('data-url')
+        }
+        form_modal('Edit Todo List', url)
+    }
+
+    const delete_conform = (e) => {
+        let url = e.target.getAttribute('data-url')
+        conform_modal(url)
+    }
+
+    const Searching = () => {
+        searchVal = $('#search-item').val().trim().toLowerCase()
+        for (let index = 0; index < $('.item-box').length; index++) {
+            console.log($('.item-box')[index].textContent.indexOf(searchVal));
+            if ($('.item-box')[index].textContent.toLowerCase().indexOf(searchVal) > -1) {
+                $('.item-box')[index].style.display = ""
+            } else {
+                $('.item-box')[index].style.display = "none"
+            }
+        }
+    }
+</script>
+{% endblock script %}
