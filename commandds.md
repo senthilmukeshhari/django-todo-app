@@ -3,6 +3,9 @@
 django==4.2.0
 fonaawesomefree==6.5.1
 Pillow==10.1.0
+pytest==8.2.2
+pytest-django==4.8.0
+
 
 # Commands
 

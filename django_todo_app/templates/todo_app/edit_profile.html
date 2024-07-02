@@ -55,7 +55,7 @@
 
         <div class="group">
             <i class="fa-solid fa-user icon"></i>
-            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Fullname" required
+            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Fullname" {% if user.first_name %}value="{{user.first_name}}"{% endif %} required
                 autofocus />
             <p class="form-text text-primary d-block">Fullname is optional.</p>
         </div>

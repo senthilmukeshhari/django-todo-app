@@ -9,14 +9,17 @@ from todo_app.models import *
 class UsernameValidation(View):
     def post(self, request):
         res = { 'status' : 'invalid' }
-        username = request.POST.get('username')
-        
-        if User.objects.filter(username=username).exists():
-            res['message'] = 'Username is aleady taken.'
+        username = request.POST.get('username', None)
+        if username:
+            if User.objects.filter(username=username).exists():
+                res['message'] = 'Username is aleady taken.'
+                return JsonResponse(res)
+            
+            res['status'] = 'valid'
+            res['message'] = 'Username is available.'
             return JsonResponse(res)
         
-        res['status'] = 'valid'
-        res['message'] = 'Username is available.'
+        res['message'] = 'Username is required.'
         return JsonResponse(res)
     
 
@@ -24,15 +27,17 @@ class EmailValidation(View):
     def post(seelf, request):
         res = { 'status' : 'invalid' }
         email = request.POST.get('email')
-        
-        if User.objects.filter(email=email).exists():
-            res['message'] = 'email is aleady taken.'
+        if email:
+            if User.objects.filter(email=email).exists():
+                res['message'] = 'email is aleady taken.'
+                return JsonResponse(res)
+            
+            res['status'] = 'valid'
+            res['message'] = 'email is available.'
             return JsonResponse(res)
         
-        res['status'] = 'valid'
-        res['message'] = 'email is available.'
+        res['message'] = 'Email address is required.'    
         return JsonResponse(res)
-    
 
 def signup_user(request):
     if request.method == 'POST':
@@ -87,7 +92,7 @@ def logout_user(request):
 def home(request):
     username = request.user
     items_obj = TodoList.objects.filter(username=username)
-    items_count = TodoList.objects.filter(is_completed=1).count()
+    items_count = TodoList.objects.filter(username=username,is_completed=1).count()
     return render(request, 'todo_app/home.html', { 'items' : items_obj, 'items_count' : items_count  })
     
 
@@ -105,24 +110,24 @@ def add_item(request):
 
 
 @login_required(login_url='login')
-def update_item(request, id=None):
-    if request.method == "POST":
-        title = request.POST.get('title', None)
-        description = request.POST.get('desc', None)
-        is_completed = request.POST.get('is_completed', None)
-        if title:
-            context = {
-                'title' : title,
-                'description' : description,
-                'is_completed' : True if is_completed == 'on' else False
-            }
-            item, created = TodoList.objects.update_or_create(id=id, defaults=context)
-            item.save()
-        return redirect('home')
-    
+def edit_item(request, id=None):
     if id:
+        if request.method == "POST":
+            title = request.POST.get('title', None)
+            description = request.POST.get('desc', None)
+            is_completed = request.POST.get('is_completed', None)
+            if title:
+                context = {
+                    'title' : title,
+                    'description' : description,
+                    'is_completed' : True if is_completed == 'on' else False
+                }
+                item, created = TodoList.objects.update_or_create(id=id, defaults=context)
+                item.save()
+            return redirect('home')
+        
         item_obj = TodoList.objects.get(id=id)
-    return render(request, 'todo_app/edit_item.html', { 'item' : item_obj })
+        return render(request, 'todo_app/edit_item.html', { 'item' : item_obj })
 
 
 @login_required(login_url='login')
